@@ -29,6 +29,7 @@ Key Operations
 """
 
 from collections import deque
+from typing import Tuple, Iterable, Union
 
 
 class TreeNode:
@@ -98,6 +99,90 @@ class BinaryTree:
             if current_node.right:
                 queue.append(current_node.right)
 
+    def search(self, key, parent=False) -> Iterable[Union[TreeNode, None]]:
+        if not self.root:
+            print("Tree is empty.")
+            return
+        else:
+            if not parent:
+                return self._search(self.root, key)
+            else:
+                return self._self_search_with_parent(None, self.root, key)
+
+    def _search(self, node, key) -> Iterable[Union[TreeNode, None]]:
+        if node is None:
+            print("Key is not in the tree.")
+            return None
+        if node.data == key:
+            print(f"Found {node.data}")
+            return node, None
+        if key < node.data:
+            return self._search(node.left, key)
+        else:
+            return self._search(node.right, key)
+
+    def _self_search_with_parent(
+        self, parent: TreeNode, node: TreeNode, key
+    ) -> Iterable[Union[TreeNode, None]]:
+        if not node:
+            print("Key is not in the tree.")
+            return None
+        if node.data == key:
+            print(f"Found {node.data}")
+            return node, parent
+        if key < node.data:
+            return self._self_search_with_parent(node, node.left, key)
+        else:
+            return self._self_search_with_parent(node, node.right, key)
+
+    def remove(self, key):
+        if not self.root:
+            print("Tree is empty")
+            return None
+
+        print("def remove(self, key):")
+        item_node, parent_node = self.search(key, parent=True)
+        if item_node is None:
+            print("Item is not in the tree, can't be removed.")
+            return
+        else:
+            self._remove(parent_node, item_node, key)
+
+    def _remove(self, parent: TreeNode, node: TreeNode, key):
+        ## Has no children, remove the node.
+        if not node.left and not node.right:
+            if node.data < parent.data:
+                parent.left = None
+            else:
+                parent.right = None
+        ## if has only one children. (XOR operator)
+        elif (node.left and not node.right) or (not node.left and node.right):
+            if node.left:
+                if node.left.data < parent.data:
+                    parent.left = node.left
+                    return
+                else:
+                    parent.right = node.left
+                    return
+            if node.right:
+                if node.right.data < parent.data:
+                    parent.left = node.right
+                    return
+                else:
+                    parent.right = node.right
+                    return
+        ## if node has two children, we replace min value of the right wing.
+        ### min in always in the left side.
+        elif node.left and node.right:
+            # find the node with it's parent in node.right branch:
+            temp_node = node.right
+            temp_parent = node
+            while temp_node.left:
+                temp_parent = temp_node
+                temp_node = temp_node.left
+            node.data = temp_node.data
+            self._remove(temp_parent, temp_node, temp_node.data)
+
 
 if __name__ == "__main__":
 
@@ -121,3 +206,27 @@ if __name__ == "__main__":
 
     print("\nLevel Order Traversal: ", end="")
     bt.level_order()  # Output: 10 5 15 2 7 12 20
+
+    print("\nLevel Order Traversal after remove: ", end="")
+    # bt.remove(20)
+    # bt.level_order()  # Output: 10 5 15 2 7 12 20
+
+    bt.remove(10)
+    bt.level_order()  # Output: 10 5 15 2 7 12 20
+
+    ## sample b
+    bt2 = BinaryTree()
+    bt2.insert(5)
+    bt2.insert(3)
+    bt2.insert(7)
+    bt2.insert(1)
+    bt2.insert(13)
+    bt2.insert(65)
+    bt2.insert(0)
+    bt2.insert(10)
+    bt2.insert(63)
+    bt2.insert(69)
+
+    print("\nLevel Order Traversal after remove: ", end="")
+    bt2.remove(13)
+    bt2.level_order()
