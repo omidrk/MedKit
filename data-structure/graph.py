@@ -48,7 +48,7 @@ class adj_list_graph:
 
 class adj_matrix_graph:
     def __init__(self, size) -> None:
-        self.graph = [[0] * size] * size
+        self.graph = [[0] * size for _ in range(size)]
 
     def add_edge(self, v1, v2, directed=True):
         self.graph[v1][v2] = 1
