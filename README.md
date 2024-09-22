@@ -12,6 +12,11 @@ This section we solve most famous sort algorithms. You can find the algorithm de
 - [Merge Sort](https://www.geeksforgeeks.org/merge-sort/)
 - [Quick Sort]()
 
+## Graph Shortest Path
+
+- [Dijkstra](https://www.w3schools.com/dsa/dsa_algo_graphs_dijkstra.php)
+- [Bellman-ford](https://www.w3schools.com/dsa/dsa_algo_graphs_bellmanford.php)
+
 ## Data Structure
 
 Some of the most used data structure implementation using python.
