@@ -1,3 +1,29 @@
+"""
+The Bellman-Ford algorithm is used to find the shortest path from a single source node to all 
+other nodes in a weighted graph. Unlike Dijkstra’s algorithm, Bellman-Ford can handle graphs 
+with negative weight edges, but it is slower. It also detects if there is a negative weight 
+cycle in the graph.
+
+Steps:
+1 - Initialize:
+    * Set the distance of the source node to 0 and all other nodes to infinity (inf).
+    * Initialize the predecessor for each node, which keeps track of the shortest path tree.
+
+2 - Relaxation:
+    * For every edge in the graph, check if the path through the edge provides a shorter 
+      distance to the destination node than the current known distance. If so, update the
+      distance and predecessor.
+
+3 - Repeat:
+    * Repeat the relaxation process V-1 times (where V is the number of vertices). 
+      Each iteration ensures that the shortest paths for up to V-1 edges are correctly found.
+
+4 - Negative Cycle Detection:
+    * After the V-1 iterations, check all edges once more. If you can further reduce the
+      distance for any node, it means that the graph contains a negative weight cycle.
+"""
+
+
 class adj_matrix_graph:
     def __init__(self, size: int) -> None:
         self.graph = [[0] * size for _ in range(size)]
